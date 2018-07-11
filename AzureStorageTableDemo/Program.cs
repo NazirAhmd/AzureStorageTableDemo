@@ -35,36 +35,42 @@ namespace AzureStorageTableDemo
             //table.Execute(insertOPeration);
 
             //Bulk Insert
-            TableBatchOperation batchOperation = new TableBatchOperation();
-            CustomerEntity customer2 = new CustomerEntity("AP", "A02")
+            //TableBatchOperation batchOperation = new TableBatchOperation();
+            //CustomerEntity customer2 = new CustomerEntity("AP", "A02")
+            //{
+            //    FirstName = "Tony",
+            //    LastName = "Gaddar",
+            //    Email = "jon@wer.com",
+            //    PhoneNumber = "985412547"
+            //};
+
+            //CustomerEntity customer3 = new CustomerEntity("AP", "A03")
+            //{
+            //    FirstName = "Golu",
+            //    LastName = "Gaddar",
+            //    Email = "jon@wer.com",
+            //    PhoneNumber = "985412547"
+            //};
+
+            //CustomerEntity customer4 = new CustomerEntity("AP", "A04")
+            //{
+            //    FirstName = "Molu",
+            //    LastName = "Gaddar",
+            //    Email = "jon@wer.com",
+            //    PhoneNumber = "985412547"
+            //};
+
+            //batchOperation.Insert(customer2);
+            //batchOperation.Insert(customer3);
+            //batchOperation.Insert(customer4);
+
+            //table.ExecuteBatch(batchOperation);
+
+            TableQuery<CustomerEntity> query = new TableQuery<CustomerEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "AP"));
+            foreach (var item in table.ExecuteQuery(query))
             {
-                FirstName = "Tony",
-                LastName = "Gaddar",
-                Email = "jon@wer.com",
-                PhoneNumber = "985412547"
-            };
-
-            CustomerEntity customer3 = new CustomerEntity("AP", "A03")
-            {
-                FirstName = "Golu",
-                LastName = "Gaddar",
-                Email = "jon@wer.com",
-                PhoneNumber = "985412547"
-            };
-
-            CustomerEntity customer4 = new CustomerEntity("AP", "A04")
-            {
-                FirstName = "Molu",
-                LastName = "Gaddar",
-                Email = "jon@wer.com",
-                PhoneNumber = "985412547"
-            };
-
-            batchOperation.Insert(customer2);
-            batchOperation.Insert(customer3);
-            batchOperation.Insert(customer4);
-
-            table.ExecuteBatch(batchOperation);
+                Console.WriteLine("{0}, {1}\t{2}\t{3}",item.PartitionKey,item.RowKey,item.FirstName,item.LastName);
+            }
         }
     }
 
